@@ -1,0 +1,28 @@
+# find modules
+
+changequote(✓,✓)esyscmd(✓zsh <<'Z'
+
+as-jade () { sed -r '
+
+    s#([^;]+);([^;]+);#\
+    tr\
+      td\
+        a(href="\2") \1\
+      td #
+
+    s#;#\
+      td #g
+
+' "$@" }
+
+{ l 'table.table(style="max-width: 70%")
+  thead
+    tr
+      td package
+      td description
+      td provider
+  tbody'
+  as-jade modules.csv
+} |jade.js
+
+Z✓)
