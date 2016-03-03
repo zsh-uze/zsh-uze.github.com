@@ -1,22 +1,52 @@
-<!DOCTYPE html><html><head><title>uze, a module ecosystem for zsh</title><meta charset="utf-8"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<!DOCTYPE html><html><head><title>uze, modules for zsh</title><meta charset="utf-8"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 
 
 
 
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"><link rel="stylesheet" href="./look.css"></head><body><div role="navigation" class="navbar navbar-default navbar-fixed-top"><div class="container"><div class="navbar-header"><a href="#" class="navbar-brand">uze, a module ecosystem for zsh</a></div><form role="form" class="navbar-form navbar-right"><div class="form-group"></div></form></div></div><div style="margin-top: 3em" class="container-fluid"><div class="row-fluid"><div class="col-md-2"><ul>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"><link rel="stylesheet" href="./look.css"></head><body><div class="navbar navbar-default navbar-fixed-top" role="navigation"><div class="container"><div class="navbar-header"><a class="navbar-brand" href="#">uze, modules for zsh</a></div><form class="navbar-form navbar-right" role="form"><div class="form-group"></div></form></div></div><div class="container-fluid" style="margin-top: 3em"><div class="row-fluid"><div class="col-md-2"><ul>
 <li><a href="index.html">home</a></li>
 <li><a href="modules.html">find modules</a></li>
 </ul><hr width="100%"/>
 <nav id="TOC"><ul>
-<li><a href="#installation">installation</a></li>
-</ul></nav></div><div class="row-fluid"></div></div><div class="col-md-10"><p><a href="http://www.zsh.org">Zsh</a> deserve an ecosystem to test, share, deploy and love it the way we do with all your dynamic langages.</p>
-<p>We're perfectly aware have flaws: all the programming langages does. Yet, zsh have no competitor when it comes to get simple things done and many of us use it as a daily shell. it is</p>
+<li><a href="#what-is-uze"> What is uze?</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#zsh-seriously">Zsh, seriously?</a></li>
+<li><a href="#modules-you-must-know-about">Modules you must know about</a><ul>
+<li><a href="#testing">testing</a></li>
+</ul></li>
+</ul></nav></div><div class="row-fluid"></div></div><div class="col-md-10"><h1 id="what-is-uze"> What is uze?</h1>
+<p>I wrote zsh scripts and libraries for more than 15 years now and i'm very opiniated about what a minimal <code>~/.zshenv</code> could be.</p>
 <ul>
-<li>distributed</li>
-<li>parallel</li>
-<li>extensible with any programming langage, really</li>
+<li>zsh options to be set to make code more reliable and maintainable (complaining as soon as something is wrong, reduce quoting hell, provide poor man namespaces, ...)</li>
+<li><p>use POD as documentation system so modules could be documented as well as a perl module.</p></li>
+<li>helpers that need to be written once and forever</li>
+<li><p>way to write, document, test and share the code (inspired by the perl syntax and conventions)</p></li>
+</ul>
+<p><a href="https://raw.githubusercontent.com/zsh-uze/uze/master/lib/uze.zsh">uze.zsh</a> is here to be sourced in your <code>~/.zshenv</code> or your script so those best practices are available. Now you can write zsh this way: (<a href="https://github.com/eiro/uze/blob/master/t/00_mir_load.zsh">mir test suite</a>)</p>
+<pre><code>uze mir
+uze devel/TAP :all
+
+mir_is_loaded () 
+for expected ( mir/ed mir/dump ) {
+    got=&quot;$( shush2 whence -wam $expected )&quot;
+    [[ ${got%: *} == $expected ]]
+    ok &quot;$expected is ready to use&quot; ||
+    note &quot;got $got&quot;
+}
+
+
+prove mir_is_loaded</code></pre>
+<p>Perl has <a href="http://www.metacpan.org">CPAN</a>, Python has <a href="https://pypi.python.org/pypi">Pypi</a>, Lua has <a href="https://luarocks.org/">rocks</a>, Javascript has <a href="https://www.npmjs.com/">npm</a>, Lilypond has <a href="https://github.com/noteflakes/lyp">lyp</a>, it's time for zsh to have something similar. you can see <a href="//modules.html">modules using uze</a>.</p>
+<h1 id="installation">Installation</h1>
+<p>source <a href="https://raw.githubusercontent.com/zsh-uze/uze/master/lib/uze.zsh">uze.zsh</a> from your <code>~/.zshenv</code>.</p>
+<h1 id="zsh-seriously">Zsh, seriously?</h1>
+<p>For some historical reasons, zsh comes with flaws and conventions are there to make those flaws less annoying. zsh is still relevant for a lot of tasks as it is a dynamic langage comming with lot of features.</p>
+<ul>
+<li>distributed (over ssh)</li>
+<li>parallel (over pipes and fifo)</li>
+<li>extensible with any programming langage as any command can be run from zsh</li>
 <li>with some functional programming features
 <ul>
 <li>symbols can carry command names</li>
@@ -25,5 +55,13 @@
 </ul></li>
 <li>comming with the most productive REPL ever, daily used by most of unix users</li>
 </ul>
-<h1 id="installation">installation</h1></div></div></div></body><script src="./behave.js"></script><script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script><script src="http://django-static.u-strasbg.fr/dipstrap/latest/js/vendor/jquery-1.11.0.min.js"></script><script src="http://django-static.u-strasbg.fr/dipstrap/latest/js/vendor/bootstrap.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous">script></script>
-</html>
+<h1 id="modules-you-must-know-about">Modules you must know about</h1>
+<h2 id="testing">testing</h2>
+<p>see <a href="http://github.com/zsh-uze/devel-tap">devel-tap repo</a> and <a href="https://testanything.org/">test anything protocol</a>.</p>
+<p>Testing is very important as your zsh scripts relies on incompatible tools which silently misbehave at runtime (GNU core utils, BSD tools, 9base ...).</p>
+<p>It is also recommended to install <code>devel/TAP</code> so you can write test suites for your</p>
+<ul>
+<li>a TAP generator to write test suites</li>
+<li><p>add helpers to embrace some good practices (perl inspired when possible) (yada yada operator, <code>die</code>, <code>warn</code>, ...)</p></li>
+<li><p>it is recommended to install and use the <code>devel/TAP</code> module to test your programs and modules. see</p></li>
+</ul></div></div></div></body><script src="./behave.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous">script></script></html>
