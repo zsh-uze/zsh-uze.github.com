@@ -4,16 +4,18 @@ changequote(✓,✓)esyscmd(✓zsh <<'Z'
 
 as-jade () { sed -r '
 
-    s#([^;]+);([^;]+);#\
-    tr\
-      td\
-        a(href="\2") \1\
-      td #
+s#([^;]+);([^;]+);#\
+tr\
+  td\
+    a(href="\2") \1\
+  td #
 
-    s#;#\
-      td #g
+s#;#\
+  td #g
 
-' "$@" }
+' }
+
+indent () { sed "s/^/$1/" }
 
 { l 'table.table(style="max-width: 70%")
   thead
@@ -22,7 +24,7 @@ as-jade () { sed -r '
       td description
       td provider
   tbody'
-  as-jade modules.csv
-} |jade.js
+  as-jade modules.csv | indent "    "
+} | jade.js
 
 Z✓)
