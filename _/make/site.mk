@@ -41,7 +41,7 @@ $(pages): $(html_tmpl)
 ifeq ($(jade_tmpl),)
 else
 $(html_tmpl): $(jade_tmpl)
-	jade.js $<
+	jade $<
 endif
 
 menu: menu.md.
